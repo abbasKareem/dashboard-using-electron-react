@@ -1,0 +1,23 @@
+{
+  "title": "معرض الورد",
+  "header_title": "صيدلية",
+  "city": "المحافظات",
+  "main": "الرئيسية",
+  "stock": "الستوكات",
+  "compaines": "الشركات",
+  "items": "الاصناف",
+  "delegates": "المندوبين",
+  "please_fill_the_form": "الرجاء إدخال جميع العناصر",
+  "submit_the_form": "إضافة",
+  "enter_name": "اسم المدينة",
+  "enter_census": "التعداد",
+  "enter_city_code": "الكود الخاص",
+  "action": "العمليات",
+  "city_name": "اسم المدينة",
+  "census": "التعداد",
+  "city_code": "كود المدينة",
+  "delete": "حذف",
+  "data_fetch_successfully": "تم جلب البيانات بنجاح!",
+  "company_name_column": "اسم الشركة",
+  "company_manager_name_column": "اسم المدير"
+}

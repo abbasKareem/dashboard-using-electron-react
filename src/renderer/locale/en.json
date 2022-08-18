@@ -1,0 +1,23 @@
+{
+  "title": "Flower Gallery",
+  "header_title": "The NavBar",
+  "city": "City",
+  "main": "Main",
+  "stock": "Stock",
+  "compaines": "Compaines",
+  "items": "Items",
+  "delegates": "Delegates",
+  "please_fill_the_form": "Please Fill The Form!",
+  "submit_the_form": "Submit",
+  "enter_name": "Enter Name",
+  "enter_census": "Enter Census",
+  "enter_city_code": "Enter City Code",
+  "action": "Action",
+  "city_name": "Name",
+  "census": "Census",
+  "city_code": "City Code",
+  "delete": "Delete",
+  "data_fetch_successfully": "Data Fetch Successfully!",
+  "company_name_column": "Name",
+  "company_manager_name_column": "Manager Name"
+}

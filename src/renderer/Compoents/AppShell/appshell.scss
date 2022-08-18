@@ -1,0 +1,55 @@
+.appshellContainer {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  margin-left: 10px;
+
+  .linkitem {
+    // background-color: blanchedalmond;
+    margin-top: 20px;
+    width: auto;
+    &:hover {
+      // background-color: aqua;
+    }
+    .appshelllinktext {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      // color: black;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+}
+
+.active {
+  border: 1px solid green;
+}
+
+// .linkItem {
+//   text-decoration: none;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin-top: 20px;
+//   cursor: pointer;
+//   width: 100%;
+// }
+
+//   textDecoration: 'none',
+
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+//   marginTop: '20px',
+//   cursor: 'pointer',
+//   width: '100%',
+//   '&:hover': {
+//     backgroundColor:
+//       theme.colorScheme === 'dark'
+//         ? theme.colors.dark[6]
+//         : theme.colors.gray[2],
+//   },
+// },
