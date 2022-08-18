@@ -11,17 +11,9 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/abbasKareem/dashboard-using-electron-react.git",
-  "bugs": {
-    "url": "https://github.com/abbasKareem/dashboard-using-electron-react.git"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/abbasKareem/dashboard-using-electron-react.git"
-  },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
+    "name": "abbas kareem",
     "email": "kareemabbas106@gmail.com"
   },
   "main": "./src/main/main.ts",
@@ -255,15 +247,7 @@
     },
     "extraResources": [
       "./assets/**"
-    ],
-    "publish": {
-      "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
-    }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
+    ]
   },
   "devEngines": {
     "node": ">=14.x",
