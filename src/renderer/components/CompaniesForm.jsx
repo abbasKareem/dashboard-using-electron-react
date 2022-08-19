@@ -69,25 +69,23 @@ const CompainesForm = () => {
       <form onSubmit={onSubmit}>
         <Grid grow>
           <Grid.Col md={3} lg={3}>
-            <Input
+            <TextInput
               size="lg"
               radius="lg"
               className={classes.classes.inputFiled}
-              label="Name"
+              label="Name *"
               placeholder={t('company_name_column')}
-              description="This Field is required"
               value={manger_name}
               onChange={(e) => setManagerName(e.target.value)}
             />
           </Grid.Col>
           <Grid.Col md={3} lg={3}>
-            <Input
+            <TextInput
               size="lg"
               radius="lg"
               className={classes.classes.inputFiled}
-              label="Name"
+              label="Manager Name *"
               placeholder={t('company_manager_name_column')}
-              description="This Field is required"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />

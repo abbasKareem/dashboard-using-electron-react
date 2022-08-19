@@ -1,146 +1,95 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import { useMantineTheme } from '@mantine/core';
-import axios from 'axios';
+import {
+  Button,
+  Center,
+  createStyles,
+  Grid,
+  Loader,
+  Paper,
+  SimpleGrid,
+} from '@mantine/core';
+import React from 'react';
+import CityForm from 'renderer/components/CityForm';
+import CityItem from 'renderer/components/CityItem';
+import { getCities } from 'renderer/query/query';
 
-import { toast } from 'react-toastify';
-
-const defaultColDef = {
-  sortable: true,
-  // editable: true,
-  flex: 1,
-  filter: true,
-  resizable: true,
-};
-
-const deleteButton = async (params) => {
-  console.log(params.value);
-  try {
-    const URL = `https://app0989.herokuapp.com/api/v1/citys/${params.value}`;
-    console.log(URL);
-    const res = await axios.delete(URL);
-    if (res.status === 200) {
-      toast.info('City Deleted Successfully!', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
-
-const columns = [
-  {
-    headerName: 'ACTION',
-    field: 'id',
-    checkboxSelection: true,
-    filter: 'agTextColumnFilter',
-    cellRendererFramework: (params) => (
-      <>
-        {/* eslint-disable-next-line react/button-has-type */}
-        <button onClick={() => deleteButton(params)}>Delete</button>
-      </>
-    ),
-    // pinned: true,
-    // rowGroup: true,
-    // hide: true,
+const useStyles = createStyles((theme) => ({
+  Card: {
+    borderRadius: '20px',
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.gray[9]
+        : theme.colors.gray[0],
+    width: '285px',
+    marginTop: '10px',
+    marginBottom: '10px',
+    color: 'black',
+    transition: 'box-shadow 150ms ease, transform 100ms ease',
+    '&:hover': {
+      boxShadow: `${theme.shadows.md} !important`,
+      transform: 'scale(1.05)',
+      backgroundColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.gray[8]
+          : theme.colors.gray[2],
+    },
   },
-  {
-    headerName: 'Name',
-    field: 'name',
-    filter: 'agTextColumnFilter',
+  centerGrid: {
+    width: '100%',
+    marginTop: '30px',
   },
-  {
-    headerName: 'Census',
-    field: 'census',
-    filter: 'agTextColumnFilter',
+  errorMessage: {
+    color: 'red',
   },
-  {
-    headerName: 'City_Code',
-    field: 'city_code',
-    filter: 'agTextColumnFilter',
-  },
-];
+}));
 
 const Cities = () => {
-  const [openedModal, setOpenedModal] = useState(false);
-  const [Yes, setYes] = useState(false);
-  const gridRef = useRef();
+  const { classes } = useStyles();
 
-  const theme = useMantineTheme();
-
-  // ----------------------------
-  const [rowData, setRowData] = useState([
-    {
-      id: 1,
-      name: 'بغداد',
-      census: 7000000,
-      city_code: 100,
-    },
-  ]);
-  const [selectedData, setSelectedData] = useState({
-    id: 0,
-    name: '',
-    census: 0,
-    city_code: 0,
-  });
-  // ----------------------------
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'https://app0989.herokuapp.com/api/v1/citys'
-        );
-        if (response.data) {
-          toast.success('Cities Loaded Successfully', {
-            position: 'top-center',
-            autoClose: 1000,
-          });
-          setRowData(response.data);
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error(error.message);
-      }
-    };
-    // eslint-disable-next-line promise/catch-or-return
-    fetchData().then((response) => console.log(response));
-  }, []);
-
-  const onSelectionChanged = async (params) => {
-    const singleRowData = params.api.getSelectedRows();
-    setSelectedData(singleRowData[0]);
-    console.log(selectedData);
-  };
+  const { data, isError, isLoading } = getCities();
 
   return (
     <>
-      <div
-        className={`${
-          theme.colorScheme === 'light'
-            ? 'ag-theme-alpine'
-            : 'ag-theme-alpine-dark'
-        }`}
-        style={{ width: 'auto' }}
-      >
-        <AgGridReact
-          ref={gridRef}
-          onSelectionChanged={onSelectionChanged}
-          rowSelection="multiple"
-          columnDefs={columns}
-          rowData={rowData}
-          pagination
-          paginationPageSize={8}
-          defaultColDef={defaultColDef}
-          enableCharts
-          enableRangeSelection
-          domLayout="autoHeight"
-        />
-      </div>
+      <CityForm />
+      <Paper>
+        <h1>
+          The Total Cityes:{' '}
+          <span style={{ color: 'green' }}>{data.length}</span>{' '}
+        </h1>
+
+        {isLoading ? (
+          <Center>
+            <Loader size="xl" />
+          </Center>
+        ) : isError ? (
+          <Center
+            sx={{
+              display: 'flex',
+              justifyItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <h1 className={classes.errorMessage}>
+              Opps, Something went wrong..
+            </h1>
+            <Button variant="outline">Try Again</Button>
+          </Center>
+        ) : (
+          <Center className={classes.centerGrid}>
+            <SimpleGrid cols={3} spacing="lg">
+              {data.map((city) => (
+                <div key={city.id} className={classes.Card}>
+                  <CityItem
+                    cityId={city.id}
+                    cityName={city.name}
+                    cityCensus={city.census}
+                    cityCode={city.city_code}
+                  />
+                </div>
+              ))}
+            </SimpleGrid>
+          </Center>
+        )}
+      </Paper>
     </>
   );
 };
