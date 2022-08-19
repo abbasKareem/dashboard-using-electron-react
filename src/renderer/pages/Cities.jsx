@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import { Modal, useMantineTheme } from '@mantine/core';
+import { useMantineTheme } from '@mantine/core';
 import axios from 'axios';
 
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 const defaultColDef = {
   sortable: true,
@@ -14,6 +13,23 @@ const defaultColDef = {
   flex: 1,
   filter: true,
   resizable: true,
+};
+
+const deleteButton = async (params) => {
+  console.log(params.value);
+  try {
+    const URL = `https://app0989.herokuapp.com/api/v1/citys/${params.value}`;
+    console.log(URL);
+    const res = await axios.delete(URL);
+    if (res.status === 200) {
+      toast.info('City Deleted Successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
 };
 
 const columns = [
@@ -24,6 +40,7 @@ const columns = [
     filter: 'agTextColumnFilter',
     cellRendererFramework: (params) => (
       <>
+        {/* eslint-disable-next-line react/button-has-type */}
         <button onClick={() => deleteButton(params)}>Delete</button>
       </>
     ),
@@ -48,24 +65,6 @@ const columns = [
   },
 ];
 
-const deleteButton = async (params) => {
-  console.log(params.value);
-
-  try {
-    let URL = `https://app0989.herokuapp.com/api/v1/citys/${params.value}`;
-    console.log(URL);
-    const res = await axios.delete(URL);
-    if (res.status === 200) {
-      toast.info('City Deleted Successfully!', {
-        position: 'top-center',
-        autoClose: 3000,
-      });
-    }
-  } catch (error) {
-    toast.error(error.message);
-  }
-};
-
 const Cities = () => {
   const [openedModal, setOpenedModal] = useState(false);
   const [Yes, setYes] = useState(false);
@@ -82,7 +81,7 @@ const Cities = () => {
       city_code: 100,
     },
   ]);
-  const [seletedData, setSeletedData] = useState({
+  const [selectedData, setSelectedData] = useState({
     id: 0,
     name: '',
     census: 0,
@@ -108,39 +107,18 @@ const Cities = () => {
         toast.error(error.message);
       }
     };
-    fetchData();
+    // eslint-disable-next-line promise/catch-or-return
+    fetchData().then((response) => console.log(response));
   }, []);
 
   const onSelectionChanged = async (params) => {
-    const singlRowData = params.api.getSelectedRows();
-    setSeletedData(singlRowData[0]);
-    console.log(seletedData);
-
-    // try {
-    //   let URL = `https://app0989.herokuapp.com/api/v1/citys/${singlRowData[0].id}`;
-    //   console.log(URL);
-    //   const res = await axios.delete(URL);
-    //   if (res.status === 200) {
-    //     toast.info('City Deleted Successfully!', {
-    //       position: 'top-center',
-    //       autoClose: 3000,
-    //     });
-    //   }
-    // } catch (error) {
-    //   toast.error(error.message);
-    // }
+    const singleRowData = params.api.getSelectedRows();
+    setSelectedData(singleRowData[0]);
+    console.log(selectedData);
   };
 
   return (
     <>
-      {/* <Modal
-        opened={openedModal}
-        onClose={() => setOpenedModal(false)}
-        title="Are Yor Sure You Want To Delete?"
-      >
-        <button onClick={() => setYes(true)}>Yes</button>
-        <button>No</button>
-      </Modal> */}
       <div
         className={`${
           theme.colorScheme === 'light'
@@ -155,13 +133,13 @@ const Cities = () => {
           rowSelection="multiple"
           columnDefs={columns}
           rowData={rowData}
-          pagination={true}
+          pagination
           paginationPageSize={8}
           defaultColDef={defaultColDef}
-          enableCharts={true}
-          enableRangeSelection={true}
+          enableCharts
+          enableRangeSelection
           domLayout="autoHeight"
-        ></AgGridReact>
+        />
       </div>
     </>
   );

@@ -1,24 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import {
-  Container,
-  Loader,
-  Modal,
-  useMantineTheme,
-  Text,
-  Button,
-  Paper,
-  createStyles,
-  TextInput,
-  Box,
-} from '@mantine/core';
-import axios from 'axios';
+import { Button, Loader, Text, useMantineTheme } from '@mantine/core';
 
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import Spinner from 'renderer/components/Spinner';
 import { t } from 'i18next';
 import CompainesForm from 'renderer/components/CompaniesForm';
 import CompainesModal from 'renderer/components/CompaniesModal';
@@ -46,7 +32,6 @@ const Companies = () => {
     isError: isErrorUpdate,
   } = useMutation(updateCompany);
 
-  // --------------state--------------
   const [gridApi, setGridApi] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = useState(initialValue);
@@ -59,8 +44,6 @@ const Companies = () => {
     isSuccess,
     message,
   } = getCompanies();
-
-  // --------------end_state--------------
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,7 +64,7 @@ const Companies = () => {
 
   const columns = [
     {
-      headerName: t('action'),
+      headerName: 'ID',
       field: 'id',
       checkboxSelection: true,
       filter: 'agTextColumnFilter',
@@ -120,15 +103,12 @@ const Companies = () => {
 
   const onChange = (e) => {
     const { value, id } = e.target;
-    console.log(value, id);
     setFormData({ ...formData, [id]: value });
   };
 
   const handleUpdate = (oldData) => {
     setFormData(oldData);
-    console.log(formData);
     setCompanyId(oldData.id);
-    console.log(companyId);
     handleClickOpen();
   };
 
@@ -136,6 +116,7 @@ const Companies = () => {
     try {
       await mutateAsync(id);
       queryClient.invalidateQueries('companies');
+      toast.success('Company Deleted Successfully!', { autoClose: 2000 });
     } catch (error) {
       toast.error('Error from server...');
     }
@@ -151,6 +132,7 @@ const Companies = () => {
     try {
       await mutateAsyncUpdate(data);
       queryClient.invalidateQueries('companies');
+      toast.success('Company Edited Successfully!');
       handleClose();
     } catch (error) {
       // handleClose();
@@ -162,16 +144,20 @@ const Companies = () => {
   };
 
   if (isLoading) {
-    toast.success('done donse ');
-    return <Loader size={28} stroke={1.5} />;
+    return <Loader size={28} stroke="2.0" />;
   }
 
   if (isUpdating) {
-    return <Loader size="xl" />;
+    return <Loader size="xl" stroke="2.0" />;
   }
 
   if (isErrorDelete) {
-    return <div>network error....</div>;
+    return (
+      <div>
+        <p>Go Back</p>
+        network error....
+      </div>
+    );
   }
   if (isErrorGetCompanies) {
     return <div>network error....</div>;

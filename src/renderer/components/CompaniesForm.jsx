@@ -63,19 +63,6 @@ const CompainesForm = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Loader size="xl" stroke />
-      </div>
-    );
-  }
   return (
     <div className={classes.classes.wrapper}>
       {isError && <div>Something went wrong...</div>}
@@ -120,7 +107,7 @@ const CompainesForm = () => {
             variant="gradient"
             gradient={{ from: 'indigo', to: 'cyan' }}
           >
-            {t('submit_the_form')}
+            {isLoading ? <Loader color="dark" /> : t('submit_the_form')}
           </Button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useQueries, useQuery } from 'react-query';
 
+// =======================COMPANY CRUD==============
 export const getCities = () =>
   useQuery('cities', async () => {
     const res = await axios.get('https://app0989.herokuapp.com/api/v1/citys');
@@ -45,3 +46,8 @@ export const addCompany = async (data) => {
   );
   return res.data;
 };
+// =======================END COMPANY CRUD==============
+
+// =======================CITY CRUD==============
+
+// =======================CITY CRUD==============

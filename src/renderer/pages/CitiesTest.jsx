@@ -41,7 +41,7 @@ const CitiesTest = () => {
   const deleteButton = async (params) => {
     console.log(params.value);
     try {
-      let URL = `https://app0989.herokuapp.com/api/v1/citys/${params.value}`;
+      const URL = `https://app0989.herokuapp.com/api/v1/citys/${params.value}`;
       console.log(URL);
       const res = await axios.delete(URL);
       if (res.status === 200) {
