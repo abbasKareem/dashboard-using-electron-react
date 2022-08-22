@@ -5,6 +5,7 @@ import {
   Input,
   Loader,
   NumberInput,
+  Paper,
   TextInput,
 } from '@mantine/core';
 import React, { useState } from 'react';
@@ -64,52 +65,54 @@ const CompainesForm = () => {
   };
 
   return (
-    <div className={classes.classes.wrapper}>
-      {isError && <div>Something went wrong...</div>}
-      <form onSubmit={onSubmit}>
-        <Grid grow>
-          <Grid.Col md={3} lg={3}>
-            <TextInput
-              size="lg"
-              radius="lg"
-              className={classes.classes.inputFiled}
-              label="Name *"
-              placeholder={t('company_name_column')}
-              value={manger_name}
-              onChange={(e) => setManagerName(e.target.value)}
-            />
-          </Grid.Col>
-          <Grid.Col md={3} lg={3}>
-            <TextInput
-              size="lg"
-              radius="lg"
-              className={classes.classes.inputFiled}
-              label="Manager Name *"
-              placeholder={t('company_manager_name_column')}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Grid.Col>
-        </Grid>
+    <Paper>
+      <div className={classes.classes.wrapper}>
+        {isError && <div>Something went wrong...</div>}
+        <form onSubmit={onSubmit}>
+          <Grid grow>
+            <Grid.Col md={3} lg={3}>
+              <TextInput
+                size="lg"
+                radius="lg"
+                className={classes.classes.inputFiled}
+                label="Name *"
+                placeholder={t('company_name_column')}
+                value={manger_name}
+                onChange={(e) => setManagerName(e.target.value)}
+              />
+            </Grid.Col>
+            <Grid.Col md={3} lg={3}>
+              <TextInput
+                size="lg"
+                radius="lg"
+                className={classes.classes.inputFiled}
+                label="Manager Name *"
+                placeholder={t('company_manager_name_column')}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Grid.Col>
+          </Grid>
 
-        <div className={classes.classes.button}>
-          <Button
-            type="submit"
-            sx={{
-              width: '30%',
-              height: '40px',
-              fontSize: '30px',
-              fontFamily: 'inherit',
-              // fontStyle: 'italic',
-            }}
-            variant="gradient"
-            gradient={{ from: 'indigo', to: 'cyan' }}
-          >
-            {isLoading ? <Loader color="dark" /> : t('submit_the_form')}
-          </Button>
-        </div>
-      </form>
-    </div>
+          <div className={classes.classes.button}>
+            <Button
+              type="submit"
+              sx={{
+                width: '30%',
+                height: '40px',
+                fontSize: '30px',
+                fontFamily: 'inherit',
+                // fontStyle: 'italic',
+              }}
+              variant="gradient"
+              gradient={{ from: 'indigo', to: 'cyan' }}
+            >
+              {isLoading ? <Loader color="dark" /> : t('submit_the_form')}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </Paper>
   );
 };
 

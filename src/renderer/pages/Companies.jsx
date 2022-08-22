@@ -2,7 +2,14 @@ import React, { useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import { Button, Loader, Text, useMantineTheme } from '@mantine/core';
+import {
+  Button,
+  Center,
+  Loader,
+  Paper,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
@@ -43,6 +50,7 @@ const Companies = () => {
     isError: isErrorGetCompanies,
     isSuccess,
     message,
+    isFetching,
   } = getCompanies();
 
   const handleClickOpen = () => {
@@ -143,9 +151,16 @@ const Companies = () => {
     setGridApi(params);
   };
 
-  if (isLoading) {
-    return <Loader size={28} stroke="2.0" />;
-  }
+  // if (isLoading || isFetching) {
+
+  //   return (
+  //     <>
+  //       <Center>
+  //         <Loader />
+  //       </Center>
+  //     </>
+  //   );
+  // }
 
   if (isUpdating) {
     return <Loader size="xl" stroke="2.0" />;
@@ -162,9 +177,6 @@ const Companies = () => {
   if (isErrorGetCompanies) {
     return <div>network error....</div>;
   }
-  // if (isErrorUpdate) {
-  //   return <div>network error while updating....</div>;
-  // }
 
   return (
     <>
@@ -180,35 +192,44 @@ const Companies = () => {
         <span
           style={{ color: 'green', marginRight: '20px', marginLeft: '20px' }}
         >
-          {data.length}
+          {data?.length}
         </span>{' '}
         Company
       </Text>
       {isErrorUpdate && <div>obbs something went wrong...</div>}
       <CompainesForm />
 
-      <div
-        className={`${
-          theme.colorScheme === 'light'
-            ? 'ag-theme-alpine'
-            : 'ag-theme-alpine-dark'
-        }`}
-        style={{ width: 'auto' }}
-      >
-        <AgGridReact
-          ref={gridRef}
-          rowSelection="multiple"
-          columnDefs={columns}
-          rowData={data}
-          pagination={true}
-          paginationPageSize={10}
-          defaultColDef={defaultColDef}
-          enableCharts={true}
-          enableRangeSelection={true}
-          domLayout="autoHeight"
-          onGridReady={onGridReady}
-        ></AgGridReact>
-      </div>
+      {isLoading || isFetching ? (
+        <Center>
+          <Loader />
+        </Center>
+      ) : (
+        <Paper sx={{ padding: '20px' }}>
+          <div
+            className={`${
+              theme.colorScheme === 'light'
+                ? 'ag-theme-alpine'
+                : 'ag-theme-alpine-dark'
+            }`}
+            style={{ width: 'auto' }}
+          >
+            <AgGridReact
+              ref={gridRef}
+              rowSelection="multiple"
+              columnDefs={columns}
+              rowData={data}
+              pagination={true}
+              paginationPageSize={10}
+              defaultColDef={defaultColDef}
+              enableCharts={true}
+              enableRangeSelection={true}
+              domLayout="autoHeight"
+              onGridReady={onGridReady}
+            ></AgGridReact>
+          </div>
+        </Paper>
+      )}
+
       <CompainesModal
         open={open}
         handleClose={handleClose}

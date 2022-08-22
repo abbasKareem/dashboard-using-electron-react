@@ -11,6 +11,7 @@ import React from 'react';
 import CityForm from 'renderer/components/CityForm';
 import CityItem from 'renderer/components/CityItem';
 import { getCities } from 'renderer/query/query';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = createStyles((theme) => ({
   Card: {
@@ -31,6 +32,7 @@ const useStyles = createStyles((theme) => ({
         theme.colorScheme === 'dark'
           ? theme.colors.gray[8]
           : theme.colors.gray[2],
+      cursor: 'pointer',
     },
   },
   centerGrid: {
@@ -43,19 +45,25 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Cities = () => {
+  const navigate = useNavigate();
   const { classes } = useStyles();
 
   const { data, isError, isLoading } = getCities();
 
   return (
     <>
-      <CityForm />
+      <Paper sx={{ marginBottom: '20px' }}>
+        <CityForm />
+      </Paper>
+      <Paper sx={{ marginBottom: '20px' }}>
+        <Center>
+          <h1>
+            The Total Cityes:{' '}
+            <span style={{ color: 'green' }}>{data?.length}</span>{' '}
+          </h1>
+        </Center>
+      </Paper>
       <Paper>
-        <h1>
-          The Total Cityes:{' '}
-          <span style={{ color: 'green' }}>{data.length}</span>{' '}
-        </h1>
-
         {isLoading ? (
           <Center>
             <Loader size="xl" />
@@ -71,7 +79,9 @@ const Cities = () => {
             <h1 className={classes.errorMessage}>
               Opps, Something went wrong..
             </h1>
-            <Button variant="outline">Try Again</Button>
+            <Button onClick={() => navigate('/cities')} variant="outline">
+              Try Again
+            </Button>
           </Center>
         ) : (
           <Center className={classes.centerGrid}>

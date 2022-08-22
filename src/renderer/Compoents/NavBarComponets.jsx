@@ -160,21 +160,6 @@ const NavbarSimple = ({ onLogout, opened }) => {
           <Code sx={{ fontWeight: 700 }}>v3.1.2</Code>
         </Group>
 
-        {/* ==========City============= */}
-        <Link
-          className={cx(classes.link, {
-            [classes.linkActive]: 'City' === active,
-          })}
-          to="/cities"
-          onClick={(event) => {
-            setActive('City');
-          }}
-        >
-          <IconBuildingFortress className={classes.linkIcon} stroke={1.5} />
-          <span>{t('city')}</span>
-        </Link>
-        {/* ===========City============ */}
-        <Space mt="lg" />
         {/* ==========1============= */}
         <Link
           className={cx(classes.link, {
@@ -191,23 +176,24 @@ const NavbarSimple = ({ onLogout, opened }) => {
         {/* ===========1============ */}
         <Space mt="lg" />
 
-        {/* ============2=========== */}
+        {/* ==========City============= */}
         <Link
           className={cx(classes.link, {
-            [classes.linkActive]: 'Stocks' === active,
+            [classes.linkActive]: 'City' === active,
           })}
-          to="/cards"
+          to="/cities"
           onClick={(event) => {
-            setActive('Stocks');
+            setActive('City');
           }}
         >
-          <IconReceipt2 className={classes.linkIcon} stroke={1.5} />
-          <span>{t('stock')}</span>
+          <IconBuildingFortress className={classes.linkIcon} stroke={1.5} />
+          <span>{t('city')}</span>
         </Link>
-        {/* ===========2============ */}
+        {/* ===========City============ */}
         <Space mt="lg" />
 
-        {/* ============3=========== */}
+        {/* ============2=========== */}
+
         <Link
           className={cx(classes.link, {
             [classes.linkActive]: 'Companies' === active,
@@ -219,6 +205,24 @@ const NavbarSimple = ({ onLogout, opened }) => {
         >
           <IconFingerprint className={classes.linkIcon} stroke={1.5} />
           <span>{t('compaines')}</span>
+        </Link>
+
+        {/* ===========2============ */}
+        <Space mt="lg" />
+
+        {/* ============3=========== */}
+
+        <Link
+          className={cx(classes.link, {
+            [classes.linkActive]: 'Stocks' === active,
+          })}
+          to="/cards"
+          onClick={(event) => {
+            setActive('Stocks');
+          }}
+        >
+          <IconReceipt2 className={classes.linkIcon} stroke={1.5} />
+          <span>{t('stock')}</span>
         </Link>
         {/* ===========3============ */}
         <Space mt="lg" />
