@@ -12,6 +12,10 @@ import CityForm from 'renderer/components/CityForm';
 import CityItem from 'renderer/components/CityItem';
 import { getCities } from 'renderer/query/query';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import ErrorFetch from 'renderer/components/ErrorFetch';
 
 const useStyles = createStyles((theme) => ({
   Card: {
@@ -50,6 +54,10 @@ const Cities = () => {
 
   const { data, isError, isLoading } = getCities();
 
+  if (isError) {
+    return <ErrorFetch />;
+  }
+
   return (
     <>
       <Paper sx={{ marginBottom: '20px' }}>
@@ -86,7 +94,7 @@ const Cities = () => {
         ) : (
           <Center className={classes.centerGrid}>
             <SimpleGrid cols={3} spacing="lg">
-              {data.map((city) => (
+              {data?.map((city) => (
                 <div key={city.id} className={classes.Card}>
                   <CityItem
                     cityId={city.id}

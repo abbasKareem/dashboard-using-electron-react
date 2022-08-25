@@ -1,32 +1,28 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   createStyles,
   Navbar,
   Group,
   Code,
   Collapse,
-  Button,
   ScrollArea,
-  Box,
   Space,
 } from '@mantine/core';
 import {
   IconBellRinging,
   IconFingerprint,
   IconKey,
-  IconSettings,
-  Icon2fa,
   IconDatabaseImport,
   IconReceipt2,
-  IconSwitchHorizontal,
   IconLogout,
   IconChevronRight,
   IconBuildingFortress,
+  IconUsers,
+  IconBadge,
+  IconBuildingCommunity,
 } from '@tabler/icons';
-import { Link } from 'react-router-dom';
 
-import { ArrowBarDown, ArrowDown, ArrowNarrowRight } from 'tabler-icons-react';
 import { useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -130,15 +126,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-const data = [
-  { link: '/cities', label: 'City', icon: IconBuildingFortress },
-  { link: '/', label: 'Main', icon: IconBellRinging },
-  { link: '/cards', label: 'Stocks', icon: IconReceipt2 },
-  { link: '/tabs', label: 'Companies', icon: IconFingerprint },
-  { link: '', label: 'Items', icon: IconKey },
-  { link: '', label: 'Delegates', icon: IconDatabaseImport },
-];
-
 const NavbarSimple = ({ onLogout, opened }) => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -170,7 +157,7 @@ const NavbarSimple = ({ onLogout, opened }) => {
             setActive('Main');
           }}
         >
-          <IconBellRinging className={classes.linkIcon} stroke={1.5} />
+          <IconBadge className={classes.linkIcon} stroke={1.5} />
           <span>{t('main')}</span>
         </Link>
         {/* ===========1============ */}
@@ -186,7 +173,7 @@ const NavbarSimple = ({ onLogout, opened }) => {
             setActive('City');
           }}
         >
-          <IconBuildingFortress className={classes.linkIcon} stroke={1.5} />
+          <IconBuildingCommunity className={classes.linkIcon} stroke={1.5} />
           <span>{t('city')}</span>
         </Link>
         {/* ===========City============ */}
@@ -208,6 +195,20 @@ const NavbarSimple = ({ onLogout, opened }) => {
         </Link>
 
         {/* ===========2============ */}
+        <Space mt="lg" />
+
+        <Link
+          className={cx(classes.link, {
+            [classes.linkActive]: 'Delegates' === active,
+          })}
+          to="/delegates"
+          onClick={(event) => {
+            setActive('Delegates');
+          }}
+        >
+          <IconUsers className={classes.linkIcon} stroke={1.5} />
+          <span>{t('delegates')}</span>
+        </Link>
         <Space mt="lg" />
 
         {/* ============3=========== */}
@@ -244,18 +245,6 @@ const NavbarSimple = ({ onLogout, opened }) => {
         <Space mt="lg" />
 
         {/* ============5=========== */}
-        <Link
-          className={cx(classes.link, {
-            [classes.linkActive]: 'Delegates' === active,
-          })}
-          to="/wellcome"
-          onClick={(event) => {
-            setActive('Delegates');
-          }}
-        >
-          <IconKey className={classes.linkIcon} stroke={1.5} />
-          <span>{t('delegates')}</span>
-        </Link>
         {/* ===========5============ */}
         <Space mt="lg" />
 

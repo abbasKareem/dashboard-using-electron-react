@@ -10,6 +10,7 @@ import Table from './pages/Table';
 import Companies from './pages/Companies';
 import Cities from './pages/Cities';
 import WellcomePage from './pages/WellcomePage';
+import Delegates from './pages/Delegates';
 
 const MainRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const MainRoutes = () => {
       <Route path="/" element={<InnerContent />}>
         <Route index element={<WellcomePage />} />
         <Route path="cities" element={<Cities />} />
+        <Route path="delegates" element={<Delegates />} />
         <Route path="cards" element={<AGGrid />} />
         <Route path="tabs" element={<Table />} />
         <Route path="login" element={<Login />} />

@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { addCity } from 'renderer/query/query';
+import ErrorFetch from './ErrorFetch';
 
 const useStyles = createStyles((theme) => ({
   wrpperInputs: {
@@ -40,6 +41,7 @@ const CityForm = () => {
   const [cityName, setCityName] = useState('');
   const [census, setCensus] = useState(null);
   const [cityCode, setCityCode] = useState(null);
+  const [opened, setOpened] = useState(false);
   // -----------------STATE -----------------------
 
   // -----------------FUNCTIONS -----------------------
@@ -59,7 +61,7 @@ const CityForm = () => {
         queryClient.invalidateQueries('cities');
         toast.success('City added Successfully!');
       } catch (error) {
-        toast.error(error);
+        setOpened(true);
       }
     }
   };
@@ -67,7 +69,15 @@ const CityForm = () => {
 
   return (
     <Paper>
-      {isError && <Modal opened={true}>Ooops, Something Went Wrong...</Modal>}
+      {isError && (
+        <Modal
+          title="Failed to add"
+          onClose={() => setOpened(false)}
+          opened={opened}
+        >
+          <ErrorFetch />
+        </Modal>
+      )}
       <form>
         <Center sx={{}}>
           <div className={classes.wrpperInputs}>

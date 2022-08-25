@@ -16,7 +16,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getCities, getCompanies } from 'renderer/query/query';
+import { getCities, getCompanies, getDelegates } from 'renderer/query/query';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -83,6 +83,11 @@ const WellcomePage = () => {
     isError: isErrorComap,
     isLoading: isLoadingCompany,
   } = getCompanies();
+  const {
+    data: dataDelegates,
+    isError: isErrorDelegates,
+    isLoading: isLoadingDelegates,
+  } = getDelegates();
 
   return (
     <>
@@ -195,7 +200,10 @@ const WellcomePage = () => {
           transition="skew-up"
           transitionDuration={300}
         >
-          <div className={classes.innerCard}>
+          <div
+            onClick={() => navigate('/delegates')}
+            className={classes.innerCard}
+          >
             <h2
               style={{
                 color: '#91CA5A',
@@ -213,7 +221,9 @@ const WellcomePage = () => {
                 fontSize: '50px',
               }}
             >
-              293
+              {isLoadingDelegates && <Loader variant="dots" />}
+
+              {dataDelegates?.length}
             </h1>
           </div>
         </Tooltip>

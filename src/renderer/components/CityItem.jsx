@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
+import { IconEdit, IconTrash } from '@tabler/icons';
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
@@ -150,10 +151,10 @@ const CityItem = ({ cityId, cityName, cityCensus, cityCode }) => {
             }}
           >
             <Button color="red" variant="outline" onClick={handleDelete}>
-              {deleteLoading ? <Loader /> : <p>DELETE</p>}
+              {deleteLoading ? <Loader /> : <IconTrash />}
             </Button>
             <Button variant="outline" onClick={handleUpdate}>
-              UPDATE
+              <IconEdit />
             </Button>
           </Center>
 

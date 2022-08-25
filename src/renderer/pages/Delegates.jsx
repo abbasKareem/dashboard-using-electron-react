@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import isOnline from 'is-online';
+
+import React, { useEffect, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -15,46 +17,58 @@ import { IconEdit, IconTrash } from '@tabler/icons';
 
 import { toast } from 'react-toastify';
 import { t } from 'i18next';
-import CompainesForm from 'renderer/components/CompaniesForm';
-import CompainesModal from 'renderer/components/CompaniesModal';
+// import CompainesForm from 'renderer/components/CompaniesForm';
+// import CompainesModal from 'renderer/components/CompaniesModal';
 import { useMutation, useQueryClient } from 'react-query';
 import {
-  deleteCompany,
-  getCompanies,
-  updateCompany,
+  deleteDelegate,
+  getDelegates,
+  updateDelegate,
 } from 'renderer/query/query';
+import DelegatesModal from 'renderer/components/DelegatesModal';
+import DelegateForm from 'renderer/components/DelegateForm';
 import ErrorFetch from 'renderer/components/ErrorFetch';
 
-const initialValue = { name: '', manger_name: '' };
-const Companies = () => {
+const initialValue = {
+  name: '',
+  phone: '',
+  email: '',
+  city: '',
+  almudhakher: '',
+};
+
+const Delegates = () => {
   const queryClient = useQueryClient();
   const theme = useMantineTheme();
   const gridRef = useRef();
+  const [online, setOnline] = useState(true);
 
   const {
     mutateAsync,
     isLoading: deleteLoading,
     isError: isErrorDelete,
-  } = useMutation(deleteCompany);
+  } = useMutation(deleteDelegate);
+
   const {
     mutateAsync: mutateAsyncUpdate,
     isLoading: isUpdating,
     isError: isErrorUpdate,
-  } = useMutation(updateCompany);
+  } = useMutation(updateDelegate);
 
   const [gridApi, setGridApi] = useState(null);
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = useState(initialValue);
-  const [companyId, setCompanyId] = useState(null);
+  const [delegateId, setDelegateId] = useState(null);
 
   const {
     data,
     isLoading,
-    isError: isErrorGetCompanies,
+    isError: isErrorGetDelegate,
     isSuccess,
     message,
     isFetching,
-  } = getCompanies();
+    error,
+  } = getDelegates();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -68,7 +82,7 @@ const Companies = () => {
   const defaultColDef = {
     sortable: true,
     // editable: true,
-    flex: 1,
+    // flex: 1,
     filter: true,
     resizable: true,
   };
@@ -81,13 +95,28 @@ const Companies = () => {
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: t('company_name_column'),
+      headerName: 'Name',
       field: 'name',
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: t('company_manager_name_column'),
-      field: 'manger_name',
+      headerName: 'PHONE',
+      field: 'phone',
+      filter: 'agTextColumnFilter',
+    },
+    {
+      headerName: 'Email',
+      field: 'email',
+      filter: 'agTextColumnFilter',
+    },
+    {
+      headerName: 'CITY',
+      field: 'city',
+      filter: 'agTextColumnFilter',
+    },
+    {
+      headerName: 'ALMUDHAKHER',
+      field: 'almudhakher',
       filter: 'agTextColumnFilter',
     },
     {
@@ -119,15 +148,15 @@ const Companies = () => {
 
   const handleUpdate = (oldData) => {
     setFormData(oldData);
-    setCompanyId(oldData.id);
+    setDelegateId(oldData.id);
     handleClickOpen();
   };
 
   const handleDelete = async (id) => {
     try {
       await mutateAsync(id);
-      queryClient.invalidateQueries('companies');
-      toast.success('Company Deleted Successfully!', { autoClose: 2000 });
+      queryClient.invalidateQueries('delegates');
+      toast.success('Delegate Deleted Successfully!', { autoClose: 2000 });
     } catch (error) {
       toast.error('Error from server...');
     }
@@ -136,14 +165,17 @@ const Companies = () => {
   const handleFormSubmit = async (e) => {
     // e.preventDefault();
     const data = {
-      id: companyId,
+      id: delegateId,
       name: formData.name,
-      manger_name: formData.manger_name,
+      phone: formData.phone,
+      email: formData.email,
+      city: formData.city,
+      almudhakher: formData.almudhakher,
     };
     try {
       await mutateAsyncUpdate(data);
-      queryClient.invalidateQueries('companies');
-      toast.success('Company Edited Successfully!');
+      queryClient.invalidateQueries('delegates');
+      toast.success('Delegate Edited Successfully!');
       handleClose();
     } catch (error) {
       // handleClose();
@@ -154,16 +186,13 @@ const Companies = () => {
     setGridApi(params);
   };
 
-  // if (isLoading || isFetching) {
-
-  //   return (
-  //     <>
-  //       <Center>
-  //         <Loader />
-  //       </Center>
-  //     </>
-  //   );
-  // }
+  // useEffect(() => {
+  //   const checkOnline = async () => {
+  //     const browserOnline = await isOnline();
+  //     setOnline(browserOnline);
+  //   };
+  //   checkOnline();
+  // }, []);
 
   if (isUpdating) {
     return <Loader size="xl" stroke="2.0" />;
@@ -177,12 +206,14 @@ const Companies = () => {
       </div>
     );
   }
-  if (isErrorGetCompanies) {
+
+  if (isErrorGetDelegate) {
     return <ErrorFetch />;
   }
 
   return (
     <>
+      {/* {!online && <h1>Your are not online</h1>} */}
       <Text
         sx={{
           display: 'flex',
@@ -197,43 +228,37 @@ const Companies = () => {
         >
           {data?.length}
         </span>{' '}
-        Company
+        Delegates
       </Text>
       {isErrorUpdate && <div>obbs something went wrong...</div>}
-      <CompainesForm />
+      <DelegateForm />
 
-      {isLoading || isFetching ? (
-        <Center>
-          <Loader />
-        </Center>
-      ) : (
-        <Paper sx={{ padding: '20px' }}>
-          <div
-            className={`${
-              theme.colorScheme === 'light'
-                ? 'ag-theme-alpine'
-                : 'ag-theme-alpine-dark'
-            }`}
-            style={{ width: 'auto' }}
-          >
-            <AgGridReact
-              ref={gridRef}
-              rowSelection="multiple"
-              columnDefs={columns}
-              rowData={data}
-              pagination={true}
-              paginationPageSize={10}
-              defaultColDef={defaultColDef}
-              enableCharts={true}
-              enableRangeSelection={true}
-              domLayout="autoHeight"
-              onGridReady={onGridReady}
-            ></AgGridReact>
-          </div>
-        </Paper>
-      )}
+      <Paper sx={{ padding: '20px' }}>
+        <div
+          className={`${
+            theme.colorScheme === 'light'
+              ? 'ag-theme-alpine'
+              : 'ag-theme-alpine-dark'
+          }`}
+          style={{ width: 'auto' }}
+        >
+          <AgGridReact
+            ref={gridRef}
+            rowSelection="multiple"
+            columnDefs={columns}
+            rowData={data}
+            pagination={true}
+            paginationPageSize={10}
+            defaultColDef={defaultColDef}
+            enableCharts={true}
+            enableRangeSelection={true}
+            domLayout="autoHeight"
+            onGridReady={onGridReady}
+          ></AgGridReact>
+        </div>
+      </Paper>
 
-      <CompainesModal
+      <DelegatesModal
         open={open}
         handleClose={handleClose}
         data={formData}
@@ -246,4 +271,4 @@ const Companies = () => {
   );
 };
 
-export default Companies;
+export default Delegates;
